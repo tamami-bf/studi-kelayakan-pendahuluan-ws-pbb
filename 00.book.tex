@@ -95,26 +95,70 @@ Adapun tujuan dari pengalihan PBB-P2 menjadi pajak daerah adalah untuk meningkat
 
 Pada awal pengalihannya, kondisi pembayaran PBB P2 di Kabupaten Brebes menggunakan sistem \textit{single host} dimana data ditempatkan dalam 2 (dua) tempat, yaitu di Dinas Pendapatan dan Pengelolaan (DPPK) sebagai Dinas yang mengelola PBB P2, dan Bank Pembangunan Daerah (BPD) Jawa Tengah sebagai tempat pembayaran. 
 
-Data akan selalu diselaraskan dalam periode harian, sehingga data pembayaran yang masuk hari ini akan tercatat dalam basis data DPPK pada H+1, begitupun segala perubahan yang terjadi di basis data DPPK pada hari ini akan dicatatkan perubahannya pada basis data BPD Jawa Tengah di H+1.
+Sistem ini sangat baik dan efektif untuk melakukan pencatatan pembayaran dengan karakteristik Kabupaten Brebes yang memiliki jumlah objek pajak lebih dari 1 (satu) juta, yang pola pembayarannya mayoritas dilakukan oleh petugas pemungut ditingkat desa/kelurahan, sehingga dalam 1 (satu) hari bisa terjadi puluhan, ratusan, hingga ribuan objek pajak yang dibayarkan sekaligus.
+
+Kondisi data pada sistem ini harus selalu diselaraskan dalam periode harian, sehingga data pembayaran yang masuk hari ini akan tercatat dalam basis data DPPK pada H+1, begitupun segala perubahan yang terjadi di basis data DPPK pada hari ini akan dicatatkan perubahannya pada basis data BPD Jawa Tengah di H+1.
 
 Kegiatan ini menjadikan data tidak konsisten dan terjadi perbedaan data diantara 2 (dua) basis data.
 
 \subsection{Peluang Yang Dituju}
 
-Dari kondisi data yang tidak konsisten seperti dijelaskan diatas. Maka diharapkan dengan membangun sistem Host-to-Host atau dengan kata lain seluruh data berada di DPPK sebagai pengelola PBB P2, sedangkan tempat pembayaran akan meminta data sesuai dengan objek yang akan dibayarkan saja.
+Dari kondisi data yang tidak konsisten seperti dijelaskan diatas. Maka diperlukan sebuah sistem yang dapat menjaga konsistensi data sekaligus mampu melakukan tugasnya mencatat transaksi pembayaran massal dan perubahan data ketetapan setiap harinya.
+
+Salah satu solusi yang dapat diambil adalah dengan membangun sistem Host-to-Host dengan seluruh data berada di DPPK sebagai pengelola PBB P2, sedangkan tempat pembayaran akan meminta dan mencatatkan data sesuai dengan objek yang akan dibayarkan saja langsung ke basis data yang berada di DPPK.
                               
 \section{PEMBENTUKAN SASARAN SISTEM BARU SECARA KESELURUHAN}
 
+Sasaran dari sistem baru secara keseluruhan adalah tentunya dapat mencatatkan data pembayaran massal secara cepat, hal ini karena hanya sebagian kecil saja dari wajib pajak yang melakukan pembayaran PBB-P2 langsung ke tempat pembayaran, sebagian besar wajib pajak melakukan pembayaran melalui petugas pemungut Desa/Kelurahan, yang dalam periode tertentu, mungkin mingguan, atau bulanan, petugas pemungut akan menyetorkannya ke tempat pembayaran, sehingga yang terjadi adalah dalam satu kali transaksi penyetoran ke tempat pembayaran, bisa dimungkinkan akan ada lebih dari 100 objek sekaligus yang terjadi di hari itu.
 
+Sasaran lain dari sistem baru ini yaitu terjaganya konsistensi data, basis data cukup berada di DPPK Kabupaten Brebes sebagai pengelola PBB-P2, apabila ada transaksi pembayaran, BPD Jawa Tengah selaku tempat pembayaran akan mencatatkannya langsung ke basis data PBB di DPPK, termasuk perubahan-perubahan yang terjadi dalam basis data bila ada pengajuan pelayanan oleh wajib pajak maka BPD Jawa Tengah dapat mengaksesnya untuk kemudian wajib pajak / petugas pemungut mendapatkan informasi tagihan terbaru.
+
+Karena sistem datanya terpusat, dan pencatatan data pembayarannya dilakukan di dalam satu basis data, maka akan didapatkan data pembayaran yang \textit{realtime}, dimana realisasi penerimaan PBB-P2 akan dapat disajikan angkanya sampai dengan detik pada saat data diakses.
 
 
 \section{PENGIDENTIFIKASIAN PARA PEMAKAI SISTEM}
 
+Sistem yang akan dibangun ini dapat dikatakan berbentuk layanan, yaitu layanan \textit{inquiry}, atau permintaan informasi data, dalam hal ini adalah data tagihan PBB-P2; layanan pencatatan transaksi pembayaran; dan layanan reversal, atau pengembalian/pembatalan data transaksi pembayaran yang telah dilakukan prosesnya karena beberapa hal.
+
+Sebagai sebuah layanan yang memberikan respon cepat dalam memproses banyak data, maka respon dari sistem ini berbentuk kode yang terkadang sulit dipahami oleh pengguna komputer awam. Maka dari itu, pemakai yang memungkinkan dari sistem ini adalah sebuah sistem juga di pihak Bank sebagai tempat pembayaran, yang nantinya dapat menerjemahkan kode-kode yang diberikan sistem ini sebagai sebuah respon ke dalam tampilan yang mudah dimengerti dan dipahami oleh pengguna komputer awam.
+
 
 \section{PEMBENTUKAN LINGKUP SISTEM}
 
+Karena luasnya pengertian layanan \textit{web services} ini, maka perlu dikerucutkan, atau dibatasi yaitu hanya akan membahas layanan \textit{web services} menggunakan metode \textit{Rest}, dan layanan \textit{web services}-nya pun hanya akan mengakomodir 3 (tiga) bentuk permintaan saja, yaitu \textit{inquiry}, pencatatan pembayaran, dan reversal.
+
 
 \section{PENGUSULAN PERANGKAT LUNAK DAN PERANGKAT KERAS UNTUK SISTEM BARU}
+
+Ada beberapa hal yang perlu dipertimbangkan terhadap pengusulan perangkat lunak untuk sistem baru yang akan dibangun, yaitu :
+
+\begin{itemize}
+  \item Basis data
+  
+  Karena data yang digunakan untuk kepentingan transaksi bersifat \textit{realtime}, segala perubahan data yang terjadi pada detik itu juga harus dapat diakses, maka kebutuhan akan basis data baru tidak diperlukan, karena nantinya sistem aplikasi akan melakukan akses langsung terhadap basis data Sistem Manajemen Informasi Objek Pajak (SISMIOP) PBB-P2 yang masih menggunakan sistem basis data Oracle 11g. Hanya saja nantinya akan ada penambahan tabel yang diperlukan guna melakukan pencatatan kejadian pada saat sistem aplikasi melakukan transaksi, sehingga memudahkan melakukan pelacakan suatu kejadian apabila terjadi hal-hal yang tidak diinginkan.
+  
+  \item \textit{Text Editor}
+  
+  Karena membangun layanan \textit{web services} yang terdiri dari 3 (tiga) layanan saja cukup mudah, maka hanya diperlukan \textit{text editor} sebagai media menuliskan kode programnya. Kali ini menggunakan \textit{text editor} Atom yang tersedia secara gratis.
+  
+  \item \textit{Pustaka (\textit{Library})}
+  
+  Untuk mempercepat dan mempermudah membangun sebuah layanan \textit{web services}, maka diperlukan beberapa pustaka atau \textit{library}, \textit{library} yang digunakan untuk membangun layanan \textit{web services} ini yaitu :
+  
+  \begin{itemize}
+    \item Spring. \textit{Framework} yang digunakan untuk mempermudah membangun layanan \textit{web services}
+    \item Hibernate, adalah \textit{framework} yang bertugas untuk melakukan komunikasi data antara sistem aplikasi dengan sistem basis data.
+    \item BoneCP, adalah pustaka yang membantu \textit{framework} Hibernate dalam melakukan koneksi dan transaksi secara cepat dengan sistem basis data.
+    \item Jackson, yaitu pustaka yang membantun mengubah objek Java menjadi format JSON yang nantinya JSON inilah format yang dikirim sebagai respon dari sebuah \textit{request} dari tempat pembayaran, dimana format ini cukup ringan bila digunakan sebagai cara komunikasi data, karena hanya berupa teks, sehingga mampu menjadikan komunikasi dengan sistem tempat pembayaran lebih efisien.
+  \end{itemize}
+  
+  Seluruh pustaka tersebut dapat diunduh dan digunakan secara gratis.
+  
+  \item \textit{Servlet Container}
+  
+  Karena sistem yang akan dibangun berbasis Java, maka diperlukan \textit{Servlet Container} sebagai \textit{server}-nya. Untuk kebutuhan ini digunakan Tomcat \textit{server}. \textit{Server} ini dapat diunduh dan digunakan secara gratis.
+  
+\end{itemize}
 
 
 \section{PEMBUATAN ANALISIS UNTUK MEMBANGUN SENDIRI ATAU MEMBELI APLIKASI}
