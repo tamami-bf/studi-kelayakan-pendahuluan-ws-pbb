@@ -253,14 +253,47 @@ Biaya yang berhubungan dengan pengembangan sistem aplikasi dapat diklasifikasika
 Manfaat yang didapat dari sistem aplikasi yang dibangun dapat diklasifikasi sebagai berikut :
 
 \begin{enumerate}[1.]
-  \item Manfaat mengurangani kesalahan-kesalahan
-  \item Manfaat meningkatkan kecepatan aktivitas
+  \item Manfaat mengurangi kesalahan-kesalahan
+  
+  Dengan dibangunnya sistem aplikasi ini, maka akan didapatkan manfaat mengurangi kesalahan-kesalahan yang terjadi seperti pada saat menggunakan sistem \textit{single host}, sebagai contoh, pada kasus \textit{single host} dimana pada saat akan melakukan pencatatan pembayaran ke SISMIOP berdasarkan data yang diambilkan dari server tempat pembayaran untuk periode H-1 (karena data ini yang paling cepat yang dapat diambil). Maka bila pada H-1 atau pada hari dilakukannya pencatatan pembayaran ada perubahan data di SISMIOP, maka akan muncul kode informasi bahwa nomor objek pajak yang telah dibayarkan tidak dapat dicatatkan pembayaranya karena ada perbedaan data antara SISMIOP dengan data yang berada di tempat pembayaran. 
+  
+  Kesalahan ini akan diminimalkan, atau dapat hilang sama sekali dengan menggunakan sistem aplikasi ini, karena setiap ada transaksi pembayaran, informasi PBB-P2 terhutang langsung diambilkan dari satu \textit{server} pusat yang berada di DPPK Kabupaten Brebes, dan pembayarannya langsung dicatatkan di \textit{server} yang sama yaitu di DPPK Kabupaten Brebes.
+  
+  \item Manfaat meningkatkan kecepatan pencatatan pembayaran
+  
+  Pada sistem \textit{single host} yang diimplementasikan sebelumnya, pencatatan pembayaran hari ini baru dapat dilakukan dihari berikutnya, kondisi ini mutlak karena data pembayaran yang tersimpan di tempat pembayaran tidak dapat diambil sebelum dilakukan \textit{cut off}. Namun dengan dibangunnya sistem aplikasi ini, maka transaksi pembayaran yang terjadi pada hari itu bahkan jam atau menit saat ini langsung dicatatkan ke \textit{server} tunggal di DPPK Kab. Brebes.
+  
+  \item Manfaat memperluas tempat pembayaran
+  
+  Sistem \textit{single host} yang sekarang berjalan, karena data dilakukan penggandaan ke \textit{server} tempat pembayaran, maka hanya Bank Pembangunan Daerah Jawa Tengah yang menerima dan bekerja sama sebagai tempat pembayaran. Namun dengan hadirnya sistem aplikasi ini, maka akan terbuka kemungkinan untuk melakukan kerjasama dengan tempat pembayaran yang lain, dimana ini akan menjadikan wajib pajak terutama bagi wajib pajak yang berada diluar Kabupaten Brebes atau bahkan diluar provinsi Jawa Tengah, dapat dengan mudah melakukan pembayaran PBB-P2 untuk objek yang dimiliki yang berada di dalam wilayah Kabupaten Brebes.
+  
+  \item Manfaat konsistensi data
+  
+  Pada sistem \textit{single host}, konsistensi data tidak dapat terjaga, karena perubahan-perubahan data yang seharusnya dapat terjadi di SISMIOP, harus dibatalkan dan dikembalikan ke data sebelumnya apabila data pembayaran ingin disimpan dan dicatat dalam sistem SISMIOP. Pada akhirnya, 2 (dua) data ditempat terpisah ini, yang pertama berada di DPPK Kabupaten Brebes, akan sangat bergantung dengan data kedua yang berada di tempat pembayaran, akan lebih direpotkan apabila jumlah Bank yang bekerja sama ada 2 (dua) atau lebih, maka data di DPPK akan bergantung ke banyaknya data di Bank yang melakukan kerja sama sebagai tempat pembayaran PBB-P2.
+  
+  Dengan bentuk sistem aplikasi yang baru, maka dengan jumlah kerjasama dengan beberapa Bank sebagai tempat pembayaran pun tidak akan menjadi masalah, karena ada 1 (satu) sumber data valid yang bisa dipertanggungjawabkan, yaitu data di DPPK Kabupaten Brebes.
+  
+  \item Manfaat realisasi penerimaan waktu nyata (\textit{realtime})
+  
+  Seperti pada penjelasan sebelumnya, bahwa pada sistem \textit{single host}, pencatatan pembayaran di SISMIOP baru dapat dilakukan di H+1, namun dengan menggunakan sistem aplikasi yang akan dibangun, realisasi pembayaran akan dapat dihitung sampai dengan menit terakhir.
 \end{enumerate}
 
 \section{PENGKAJIAN TERHADAP RESIKO PROYEK}
 
+Sama seperti jenis proyek yang lain, proyek ini pun pasti memiliki beberapa resiko yang apabila dikelola akan menjadikan nilai tambah bagi proyek bersangkutan.
+
+Dengan adanya sistem aplikasi baru ini, pencocokan data antara data yang berada di Bank Tempat Pembayaran dengan data yang berada di SISMIOP harus segera dicocokan secepatnya, karena begitu sistem aplikasi berjalan, maka tidak mungkin data untuk nomor objek pajak yang sebelumnya sudah dilakukan pembayaran akan muncul kembali sebagai data yang terhutang. Kondisi ini sudah disiapkan dengan melakukan pencatatan historis ketetapan terhadap objek pajak, jadi tinggal dilakukan saja pencocokan datanya dimana data-data yang telah terbayar menjadi patokan bagi data yang berada di DPPK.
+
+Kondisi keamanan komunikasi data melalui internet menjadi hal yang mutlak, maka dari itu sistem aplikasi akan menggunakan \textit{server} VPN agar koneksi antara server DPPK Kabupaten Brebes dengan Bank tempat pembayaran lebih terjaga karena jalurnya dilakukan secara terenkripsi.
+
+Kondisi jaringan internet yang tersedia pun harus dapat dijaga ketersediaannya, seperti dengan menggunakan 2 (dua) atau lebih jaringan internet dari 2 (dua) atau lebih penyedia jaringan internet, yang dimaksudkan apabila ada kendala pada sebuah jaringan internet, maka jaringan internet yang lain akan melakukan fungsinya sebagai pengganti jarigan yang rusak.
+
 
 \section{PEMBERIAN REKOMENDASI UNTUK MENERUSKAN ATAU MENGHENTIKAN PROYEK}
+
+Rekomendasi yang dapat diberikan dengan melihat beberapa pertimbangan dan kebutuhan akan sistem \textit{Host-to-Host} maka perlunya meneruskan kegiatan ini sebagai titik awal melakukan perbaikan administrasi pencatatan pembayaran, sekaligus menjaga konsistensi data SISMIOP yang apabila ditanyakan berapa jumlah objek pajak per hari ini, dapat langsung terbaca dan dapat dipertanggungjawabkan.
+
+Alasan lain kenapa perlunya proyek ini diteruskan adalah adanya rencana untuk bekerja sama dengan Bank lain sebagai tempat pembayaran, maka diperlukan sebuah sistem yang standar dan dapat diimplementasikan dengan Bank sebagai tempat pembayaran dalam melakukan \textit{inquiry}, pencatatan pembayaran, maupun hal lain yang berhubungan dengan pembayaran PBB-P2.
 
 
 \end{document}  
